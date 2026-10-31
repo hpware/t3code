@@ -41,13 +41,17 @@ import {
   buildPendingUserInputAnswers,
   setPendingUserInputCustomAnswer,
   togglePendingUserInputOptionSelection,
-  type PendingUserInputDraftAnswer,
-} from "../lib/threadActivity";
+  type PendingUserInputDraftAnswer as SharedPendingUserInputDraftAnswer,
+} from "@t3tools/client-runtime/state/pending-user-input";
 import { appAtomRegistry } from "./atom-registry";
 import { useSelectedThreadPendingRequests } from "./use-thread-detail";
 import { useThreadSelection } from "./use-thread-selection";
 import { useAtomCommand } from "./use-atom-command";
 import { readEnvironmentScope } from "./session";
+
+export interface PendingUserInputDraftAnswer extends SharedPendingUserInputDraftAnswer {
+  readonly customAnswerResetVersion?: number;
+}
 
 const EMPTY_PENDING_REQUESTS: PendingThreadRequests = { approvals: [], userInputs: [] };
 
