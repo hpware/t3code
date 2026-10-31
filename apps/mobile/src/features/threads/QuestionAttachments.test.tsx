@@ -130,6 +130,9 @@ describe("QuestionAttachments answer field", () => {
     type("你");
     render("你");
     expect(input().value).toBe("你");
+
+    render("ㄋㄧ");
+    expect(input().value).toBe("你");
   });
 
   it("adopts a draft changed from outside the field", () => {
@@ -137,7 +140,7 @@ describe("QuestionAttachments answer field", () => {
     type("my own colour");
     render("my own colour");
 
-    render("");
+    render("", 1);
     expect(input().value).toBe("");
   });
 
@@ -147,17 +150,17 @@ describe("QuestionAttachments answer field", () => {
     type("ab");
 
     render("a");
-    render("");
+    render("", 1);
     expect(input().value).toBe("");
 
     type("new answer");
-    render("", 1);
+    render("", 2);
     expect(input().value).toBe("");
 
     type("a");
     type("");
     type("ab");
-    render("", 2);
+    render("", 3);
     expect(input().value).toBe("");
   });
 });

@@ -65,22 +65,14 @@ export function QuestionAttachments(props: {
   });
   // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- releases keyboard ownership on unmount, since an unmounted native input never emits blur
   useEffect(() => () => releaseFocus(), []);
-  // Late draft echoes replace iOS marked text; ignore them while accepting outside edits.
+  // Only option selection resets the local text; draft echoes can lag native composition.
   const [text, setText] = useState(props.value);
-  const [previousValue, setPreviousValue] = useState(props.value);
   const [previousOutsideChange, setPreviousOutsideChange] = useState(props.outsideChange);
-  const [sentValues, setSentValues] = useState<ReadonlySet<string>>(() => new Set());
-  const outsideChanged = props.outsideChange !== previousOutsideChange;
-  if (props.value !== previousValue || outsideChanged) {
-    setPreviousValue(props.value);
+  if (props.outsideChange !== previousOutsideChange) {
     setPreviousOutsideChange(props.outsideChange);
-    if (outsideChanged || props.value === text || !sentValues.has(props.value)) {
-      setSentValues(new Set());
-      setText(props.value);
-    }
+    setText(props.value);
   }
   const changeText = (value: string) => {
-    setSentValues((current) => new Set(current).add(value));
     setText(value);
     props.onChangeText(value);
   };
